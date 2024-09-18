@@ -7,7 +7,7 @@ ByteStream::ByteStream( uint64_t capacity ) : capacity_( capacity ) {}
 bool Writer::is_closed() const
 {
   // Has the stream been closed?
-  // Your code here.
+  // Your code here.BytesPushed
   return closed;
 }
 // Writer将数据放入stream中
