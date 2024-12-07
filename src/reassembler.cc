@@ -17,10 +17,9 @@ void Reassembler::insert( uint64_t first_index, string data, bool is_last_substr
     if ( t.second == true ) {
       if ( t.first != data[j] )
         throw __throw_runtime_error;
-      }
-      else {
-        t = make_pair( data[j], true );
-        ++_unassembled_bytes_cnt;
+    } else {
+      t = make_pair( data[j], true );
+      ++_unassembled_bytes_cnt;
     }
   }
 

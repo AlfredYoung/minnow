@@ -49,7 +49,7 @@ public:
   const Writer& writer() const { return output_.writer(); }
 
 private:
-  ByteStream output_;                         // the Reassembler writes to this ByteStream
+  ByteStream output_; // the Reassembler writes to this ByteStream
 
   size_t _capacity;                           //!< The maximum number of bytes
   std::vector<std::pair<char, bool>> _stream; //!< The current part of the reassembled byte stream

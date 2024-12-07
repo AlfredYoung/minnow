@@ -8,11 +8,11 @@ class TCPReceiver
 {
 public:
   // Construct with given Reassembler
-  explicit TCPReceiver( Reassembler&& reassembler ) : 
-  reassembler_( std::move( reassembler ) ) ,
-  isn(-1), 
-  open(false),
-  _capacity (std::min((size_t)reassembler_.writer().available_capacity(),(size_t)UINT16_MAX))
+  explicit TCPReceiver( Reassembler&& reassembler )
+    : reassembler_( std::move( reassembler ) )
+    , isn( -1 )
+    , open( false )
+    , _capacity( std::min( (size_t)reassembler_.writer().available_capacity(), (size_t)UINT16_MAX ) )
   {}
 
   /*
@@ -32,7 +32,7 @@ public:
 
 private:
   Reassembler reassembler_;
-  Wrap32 isn;                   // zero_point
-  bool open;                    // ISN
-  size_t _capacity;             // 容量，最大为UINT16_MAX
+  Wrap32 isn;       // zero_point
+  bool open;        // ISN
+  size_t _capacity; // 容量，最大为UINT16_MAX
 };

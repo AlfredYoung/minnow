@@ -8,7 +8,7 @@ void TCPReceiver::receive( TCPSenderMessage message )
   if ( message.RST ) {
     reassembler_.reader().set_error();
     return;
-  } 
+  }
   if ( open == false ) {
     if ( !message.SYN )
       return;
