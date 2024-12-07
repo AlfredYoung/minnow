@@ -74,7 +74,7 @@ private:
   // 补充成员变量
   Timer _timer;                                                          // 定时器
   uint64_t _consecutive_retransmissions = 0;                             // 连续重传次数
-  uint64_t _sequence_numbers_in_flight = 0;                              // 未被确认的序列数量
+  uint64_t _sequence_numbers_in_flight = 0;                              // 未被确认的字节大小
   uint32_t _windows_size = 1;                                            // 接收方窗口大小
   uint64_t _next_seqno { 0 };                                            // 下一个报文的序列号
   std::queue<std::pair<uint64_t, TCPSenderMessage>> _outstanding_seg {}; //已经发送但是没有被确认的segment队列
