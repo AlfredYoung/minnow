@@ -83,7 +83,7 @@ void NetworkInterface::send_datagram( const InternetDatagram& dgram, const Addre
 
       response_time[next_hop.ipv4_numeric()] = arp_response_ttl;
     }
-    waiting_datagram[next_hop.ipv4_numeric()].emplace_back(next_hop, dgram);
+    waiting_datagram[next_hop.ipv4_numeric()].emplace_back(dgram);
   }
 
 }
@@ -129,8 +129,7 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
     auto it = waiting_datagram.find(src_ip);
     if (it != waiting_datagram.end()) {
       
-      for (const auto &[next_hop, dgram] : it->second) {
-        // send_datagram(dgram, next_hop);
+      for (const auto &dgram : it->second) {
         send_ip(arp_msg.sender_ethernet_address, ethernet_address_, dgram);
       }
       waiting_datagram.erase(it);

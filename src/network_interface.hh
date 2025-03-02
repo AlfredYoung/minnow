@@ -102,7 +102,7 @@ private:
   unordered_map<uint32_t, size_t> response_time {};
 
   // 记录ip地址与要发送给这个ip地址的报文
-  unordered_map<uint32_t, list<pair<Address, InternetDatagram>>> waiting_datagram {};
+  unordered_map<uint32_t, list<InternetDatagram>> waiting_datagram {};
 
   // 发送链路层数据帧，简化主要函数的代码
   template <typename DatagramType>
