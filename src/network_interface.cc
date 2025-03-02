@@ -144,6 +144,7 @@ void NetworkInterface::recv_frame( const EthernetFrame& frame )
 void NetworkInterface::tick( const size_t ms_since_last_tick )
 {
   // Your code here.
+  // 遍历arp_table，清除超时项，不超时的给ttl减累计的ticks
   for (auto it = arp_table.begin(); it != arp_table.end();) {
     if (it->second.ttl <= ms_since_last_tick) {
       it = arp_table.erase(it);
@@ -154,6 +155,7 @@ void NetworkInterface::tick( const size_t ms_since_last_tick )
     }
   }
 
+  // 如果响应超时也去除，如果这个ip响应超时，同时去掉等待队列中的元素
   for (auto it = response_time.begin(); it != response_time.end();) {
     if (it->second <= ms_since_last_tick) {
       auto it2 = waiting_datagram.find(it->first);
