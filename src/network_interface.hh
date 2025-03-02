@@ -1,11 +1,13 @@
 #pragma once
 
 #include <queue>
+#include <unordered_map>
+#include <list>
 
 #include "address.hh"
 #include "ethernet_frame.hh"
 #include "ipv4_datagram.hh"
-
+using namespace std;
 // A "network interface" that connects IP (the internet layer, or network layer)
 // with Ethernet (the network access layer, or link layer).
 
@@ -66,6 +68,11 @@ public:
   std::queue<InternetDatagram>& datagrams_received() { return datagrams_received_; }
 
 private:
+  struct ARPEntry {
+    EthernetAddress eth_addr;
+    size_t ttl;
+  };
+
   // Human-readable name of the interface
   std::string name_;
 
@@ -81,4 +88,27 @@ private:
 
   // Datagrams that have been received
   std::queue<InternetDatagram> datagrams_received_ {};
+
+  // ARP 表项的超时时间
+  static constexpr size_t arp_entry_ttl = 30 * 1000;
+  
+  // ARP 回复的超时时间
+  static constexpr size_t arp_response_ttl = 5 * 1000;
+
+  // 将 ip 地址映射到 以太网帧的地址
+  unordered_map<uint32_t, ARPEntry> arp_table {};
+
+  // 记录 ip 地址与其相应时间，过期ip地址即丢弃
+  unordered_map<uint32_t, size_t> response_time {};
+
+  // 记录ip地址与要发送给这个ip地址的报文
+  unordered_map<uint32_t, list<pair<Address, InternetDatagram>>> waiting_datagram {};
+
+  // 发送链路层数据帧，简化主要函数的代码
+  template <typename DatagramType>
+  void send(const EthernetAddress &dst, const EthernetAddress &src, const uint16_t &type, const DatagramType& dgram) const;
+  void send_ip(const EthernetAddress &dst, const EthernetAddress &src, const IPv4Datagram &dgram) const;
+  void send_arp(const EthernetAddress &dst, const EthernetAddress &src, const ARPMessage &arp) const;
+  
+
 };
